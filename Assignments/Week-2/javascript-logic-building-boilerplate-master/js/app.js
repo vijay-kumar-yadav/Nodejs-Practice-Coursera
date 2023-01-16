@@ -19,9 +19,9 @@ function arrangeEmpDetails(data) {
       return -1;
     }
     if (a.name > b.name) {
-      return 1;
+      return true;
     }
-    return 0;
+    return false;
   }
 
   return empDetails.sort(compare);
