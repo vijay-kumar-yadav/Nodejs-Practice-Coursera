@@ -1,11 +1,11 @@
 const fs = require("fs");
 const readline = require("readline");
 
-const writeStream = fs.createWriteStream("output.txt");
-
 const file = readline.createInterface({
   input: fs.createReadStream("input.txt"),
 });
+
+const writeStream = fs.createWriteStream("output.txt");
 
 var finalData = [];
 file.on("line", (line) => {

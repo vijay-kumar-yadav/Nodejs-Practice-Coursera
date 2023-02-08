@@ -1,0 +1,8 @@
+(fileContents, cb) => {
+  let filteredData;
+  filteredData = lodash.filter(
+    fileContents,
+    (data) => data.payment_method == "credit"
+  );
+  cb(null, filteredData);
+}
