@@ -1,6 +1,7 @@
 //import all the modules require
 const fs = require("fs");
 const readline = require("readline");
+const csv = require("csv-parser");
 const lodash = require("lodash");
 //Use try and catch to handle the error where ever required
 //return the callback with appropriate data where ever require in all the methods
@@ -80,30 +81,12 @@ const writeFilteredDataToFile = (outputFileName, filteredData, cb) => {
 
 const readFileContentsUsingStream = (fileName, cb) => {
   let fileContents = [];
-
-  fs.createReadStream(fileName).on("error", (err) => {
-    console.log(
-      "Error while reading contents of file using streams, ERROR::",
-      err
-    );
-    cb("Encountered error while reading file contents using streams..!");
-  });
-  const file = fs.createReadStream(fileName);
-  let chunk;
-  let data = "";
-  file.on("readable", () => {
-    while ((chunk = file.read()) != null) {
-      data += chunk.toString();
-    }
-  });
-
-  file.on("end", () => {
-    // fileContents.splice(0, 1);
-    // cb(null, fileContents);
-    fileContents = data.toString().split("\n");
-
-    cb(null, fileContents);
-  });
+  fs.createReadStream(fileName)
+    .pipe(csv())
+    .on("data", function (data) {
+      fileContents.push(data);
+    })
+    .on("end", () => cb(null, fileContents));
 };
 
 //This method will filetDatewithNoChildren it will take two parameters
